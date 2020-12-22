@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       home: //Row(
         // children:[
         // CountDownTimerApp(),
-        Timers(title:'title'),
+        Timers(),
         // ]
       //)
     );
