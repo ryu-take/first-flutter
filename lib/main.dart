@@ -1,3 +1,6 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+
 import 'countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.red,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Pomodoro? Timer'),
     );
@@ -34,7 +37,15 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  final audio = AudioCache();
+
+  @override
+  void initState() {
+    audio.load('cursor8.mp3');
+    super.initState();
+  }
+
   int workmin = 0;
   int worksec = 0;
   int workTotalTime = 0;
@@ -54,17 +65,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // Expanded( ??
-              //いるらしい
-              Row(
-                //二つのコンテナとボタンが入る
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 150.0,
-                      ),
-                      child:
-                  Container(
+            //いるらしい
+            Row(
+              //二つのコンテナとボタンが入る
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 150.0,
+                  ),
+                  child: Container(
                     height: 200.0,
                     decoration: BoxDecoration(
                       // shape: BoxShape.circle,
@@ -78,7 +88,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         Row(
                           children: <Widget>[
                             Icon(Icons.no_cell),
-                            Text(" Work time ",
+                            Text(
+                              " Work time ",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -86,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                             Icon(Icons.fitness_center),
                           ],
                         ),
-                        
                         Row(
                           children: [
                             NumberPicker.integer(
@@ -94,13 +104,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               minValue: 0,
                               maxValue: 59,
                               onChanged: (val) {
+                                audio.play('cursor8.mp3', mode: PlayerMode.LOW_LATENCY);
                                 setState(() {
                                   workmin = val;
                                   workTotalTime = ((workmin * 60) + worksec);
                                 });
                               },
                             ),
-                            Text(":",
+                            Text(
+                              ":",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
@@ -111,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               minValue: 0,
                               maxValue: 59,
                               onChanged: (val) {
+                                audio.play('cursor8.mp3', mode: PlayerMode.LOW_LATENCY);
                                 setState(() {
                                   worksec = val;
                                   workTotalTime = ((workmin * 60) + worksec);
@@ -122,13 +135,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                       ],
                     ),
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 150.0,
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 150.0,
-                      ),
-                      child:
-                  Container(
+                  child: Container(
                     height: 200,
                     decoration: BoxDecoration(
                       // shape: BoxShape.circle,
@@ -141,10 +153,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         Row(
                           children: [
                             Icon(Icons.music_note),
-                            Text(" Rest time ",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold
-                              ),
+                            Text(
+                              " Rest time ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Icon(Icons.airline_seat_individual_suite_rounded),
                           ],
@@ -162,7 +173,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                 });
                               },
                             ),
-                            Text(":",
+                            Text(
+                              ":",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
@@ -184,59 +196,63 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                       ],
                     ),
                   ),
-                  ),
-                ],
-              ),
-           // ),
+                ),
+              ],
+            ),
+            // ),
             //Expanded(
-              //child: 
-              Padding(
-                padding: EdgeInsets.only(bottom: 100),
-                child: ElevatedButton(
-                  child: Text('Start Timer!',
-                    style:TextStyle( 
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+            //child:
+            Padding(
+              padding: EdgeInsets.only(bottom: 100),
+              child: ElevatedButton(
+                child: Text(
+                  'Start Timer!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.lightGreenAccent,
-                    onPrimary: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 10.0,
-                    ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.lightGreenAccent,
+                  onPrimary: Colors.white,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 40.0,
+                    vertical: 10.0,
                   ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      child: AlertDialog(
-                        title: Text("Start Timer"),
-                        content: Text('Work Time → $workmin:$worksec \nRest Time  → $restmin:$restsec \nでタイマーを起動します。',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    child: AlertDialog(
+                      title: Text("Start Timer"),
+                      content: Text(
+                        'Work Time → $workmin:$worksec \nRest Time  → $restmin:$restsec \nでタイマーを起動します。',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      actions: <Widget>[
+                        // ボタン領域
+                        FlatButton(
+                          child: Text("Cancel"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        FlatButton(
+                          child: Text("OK"),
+                          onPressed: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Pomodoro(
+                                    '$workTotalTime', '$restTotalTime')),
                           ),
                         ),
-                        actions: <Widget>[
-                          // ボタン領域
-                          FlatButton(
-                            child: Text("Cancel"),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                          FlatButton(
-                            child: Text("OK"),
-                            onPressed: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Pomodoro('$workTotalTime','$restTotalTime')),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                      ],
+                    ),
+                  );
+                },
               ),
+            ),
             //),
           ],
         ),
