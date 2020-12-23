@@ -45,7 +45,6 @@ class _TimersState extends State<Timers> with TickerProviderStateMixin {
             stopped = true;
             if (totalTime == 0) {
               timetodisplay = totalTime.toString();
-              print("owatta");
             }
           } else if (totalTime < 60) {
             timetodisplay = totalTime.toString();
