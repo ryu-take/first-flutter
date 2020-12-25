@@ -8,7 +8,7 @@ This was created during our time as a student at Code Chrysalis.
 This is the main page of this app. You can set the work time and rest time. Default time is set as Pomodoro Timer that is 25/5 min period.
 
 これがアプリのメインページです。集中したい時間と休憩したい時間を選択することができます。デフォルトではポモドーロタイマーと同じ25/5分周期に設定しています。
-[a](https://github.com/ryu-take/first-flutter/blob/master/assets/shot1.png)
+![](assets/shot1.png)
 
 
 ## Getting Started
