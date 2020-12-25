@@ -9,7 +9,7 @@ This is the main page of this app. You can set the work time and rest time. Defa
 
 これがアプリのメインページです。集中したい時間と休憩したい時間を選択することができます。デフォルトではポモドーロタイマーと同じ25/5分周期に設定しています。
 
-<img src="assets/shot1.png" width="500" height="300">
+<img src="assets/shot1.png" width="500" >
 
 
 ## Getting Started
