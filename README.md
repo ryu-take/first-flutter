@@ -1,13 +1,14 @@
 # Pomodoro Timer
 
 このリポジトリは Code Chrysalisの生徒であるときに作成しました。
-
 This was created during our time as a student at Code Chrysalis.
 
-## How to use this app
+## How to use this app/ 使い方
 
-This is the main page of this app.
-[](assets/shot1)
+This is the main page of this app. You can set the work time and rest time
+これがアプリのメインページです。集中したい時間と休憩したい時間を選択することができます。
+[](https://github.com/ryu-take/first-flutter/blob/master/assets/shot1.png)
+
 
 ## Getting Started
 
