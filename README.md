@@ -4,7 +4,10 @@
 
 This was created during our time as a student at Code Chrysalis.
 
+## How to use this app
 
+This is the main page of this app.
+[](assets/shot1)
 
 ## Getting Started
 
