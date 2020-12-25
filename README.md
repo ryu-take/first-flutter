@@ -1,6 +1,10 @@
-# my_app
+# Pomodoro Timer
 
-A new Flutter project.
+このリポジトリは Code Chrysalisの生徒であるときに作成しました。
+
+This was created during our time as a student at Code Chrysalis.
+
+
 
 ## Getting Started
 
