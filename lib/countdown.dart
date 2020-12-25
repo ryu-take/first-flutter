@@ -13,10 +13,6 @@ class Pomodoro extends StatefulWidget {
 }
 
 class _PomodoroState extends State<Pomodoro> {
-  // Future<AudioPlayer> playLocalAsset() async {
-  //   AudioCache cache = new AudioCache();
-  //   return await cache.play("../sounds/cursor1.mp3");
-  // }
   final cache = AudioCache();
 
   @override
@@ -31,17 +27,16 @@ class _PomodoroState extends State<Pomodoro> {
   bool isworktime = false;
   bool isstarted = true;
   int totalTime = 0;
+  int record = 0;
+  String recorddisplay = "";
   String timetodisplay = "";
 
   void start() {
-    print("start,$totalTime");
     setState(() {
       if (isworktime) {
-        print("torest");
         totalTime = int.parse(widget.resttime);
         isworktime = false;
       } else {
-        print("towork");
         totalTime = int.parse(widget.worktime);
         isworktime = true;
       }
@@ -53,16 +48,21 @@ class _PomodoroState extends State<Pomodoro> {
       ),
       (Timer t) {
         setState(() {
-          print("tic,$totalTime");
-          // if (totalTime < 1) {
-          //   checktimer = true;
+          if (totalTime != 0) {
+            record++;
+          }
+          if (record < 60) {
+            recorddisplay = "0:" + record.toString();
+          } else {
+            int m = record ~/ 60;
+            int s = record - (60 * m);
+            recorddisplay = m.toString() + ":" + s.toString();
+          }
           if (totalTime < 1) {
             timetodisplay = "0:" + totalTime.toString();
-            print("changing!");
             t.cancel();
             cache.play('warning1.mp3', mode: PlayerMode.LOW_LATENCY);
             start();
-            // }
           } else if (totalTime < 60) {
             if (totalTime < 4) {
               cache.play('cursor1.mp3', mode: PlayerMode.LOW_LATENCY);
@@ -103,58 +103,121 @@ class _PomodoroState extends State<Pomodoro> {
   Widget build(BuildContext context) {
     if (isworktime) {
       return Scaffold(
-        body: Container(
-          height: double.infinity,
-          color: Colors.amberAccent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 6,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text("It's Work Time!!"),
-                      Text(
-                        "$timetodisplay",
-                        style: TextStyle(
-                          fontSize: 35.0,
+        body: InkWell(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('ここで終わる・・・にはまだ早い！'),
+                );
+              },
+            );
+          },
+          child: Container(
+            height: double.infinity,
+            color: Colors.amberAccent,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 6,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          "Your Record: $recorddisplay",
+                          style: TextStyle(
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          "It's Work Time!!",
+                          style: TextStyle(
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "$timetodisplay",
+                          style: TextStyle(
+                            fontSize: 60.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       );
     } else {
       return Scaffold(
-        body: Container(
-          height: double.infinity,
-          color: Colors.lightBlue,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 6,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text("It's Rest Time !!!"),
-                      Text(
-                        "$timetodisplay",
-                        style: TextStyle(
-                          fontSize: 35.0,
+        body: InkWell(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('終わりますか？'),
+                  actions: <Widget>[
+                    FlatButton(
+                      color: Colors.blue,
+                      child: Text("Cancel"),
+                      onPressed: () => {
+                        Navigator.of(context).pop(),
+                        Navigator.of(context).pop(),
+                        Navigator.of(context).pop(),
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Container(
+            height: double.infinity,
+            color: Colors.lightBlue,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 6,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          "Your Record: $recorddisplay",
+                          style: TextStyle(
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          "It's Rest Time!!",
+                          style: TextStyle(
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "$timetodisplay",
+                          style: TextStyle(
+                            fontSize: 60.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

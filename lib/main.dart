@@ -15,10 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        // visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
       home: MyHomePage(title: 'Pomodoro? Timer'),
     );
   }
@@ -46,224 +42,247 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-  int workmin = 0;
+  int workmin = 25;
   int worksec = 0;
-  int workTotalTime = 0;
-  int restmin = 0;
+  int workTotalTime = 1500;
+  int restmin = 5;
   int restsec = 0;
-  int restTotalTime = 0;
+  int restTotalTime = 300;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        color: Colors.deepPurpleAccent[100],
-        child: Column(
-          //一番大きいの
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Expanded( ??
-            //いるらしい
-            Row(
-              //二つのコンテナとボタンが入る
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 150.0,
-                  ),
-                  child: Container(
-                    height: 200.0,
-                    decoration: BoxDecoration(
-                      // shape: BoxShape.circle,
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.yellowAccent,
-                    ),
-                    //文字とナンバーピッカーが入る
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Icon(Icons.no_cell),
-                            Text(
-                              " Work time ",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+      body: Center(
+        child: Container(
+          color: Colors.deepPurpleAccent[100],
+          child: Column(
+            //一番大きいの
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              //いるらしい
+              Expanded(
+                flex: 5,
+                child: Row(
+                  //二つのコンテナとボタンが入る
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 196),
+                      child: Container(
+                        height: 200.0,
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.yellowAccent,
+                        ),
+                        //文字とナンバーピッカーが入る
+                        child: Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.no_cell),
+                                  Text(
+                                    " Work time ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(Icons.fitness_center),
+                                ],
                               ),
-                            ),
-                            Icon(Icons.fitness_center),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            NumberPicker.integer(
-                              initialValue: workmin,
-                              minValue: 0,
-                              maxValue: 59,
-                              onChanged: (val) {
-                                audio.play('cursor8.mp3', mode: PlayerMode.LOW_LATENCY);
-                                setState(() {
-                                  workmin = val;
-                                  workTotalTime = ((workmin * 60) + worksec);
-                                });
-                              },
-                            ),
-                            Text(
-                              ":",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: NumberPicker.integer(
+                                      initialValue: workmin,
+                                      minValue: 0,
+                                      maxValue: 59,
+                                      onChanged: (val) {
+                                        audio.play('cursor8.mp3', volume: 0.1, mode: PlayerMode.LOW_LATENCY);
+                                        setState(() {
+                                          workmin = val;
+                                          workTotalTime = ((workmin * 60) + worksec);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  //Expanded(
+                                    //child: 
+                                    Text(
+                                      ":",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                  //),
+                                  Expanded(
+                                    child: NumberPicker.integer(
+                                      initialValue: worksec,
+                                      minValue: 0,
+                                      maxValue: 59,
+                                      onChanged: (val) {
+                                        audio.play('cursor8.mp3', volume: 0.1, mode: PlayerMode.LOW_LATENCY);
+                                        setState(() {
+                                          worksec = val;
+                                          workTotalTime = ((workmin * 60) + worksec);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            NumberPicker.integer(
-                              initialValue: worksec,
-                              minValue: 0,
-                              maxValue: 59,
-                              onChanged: (val) {
-                                audio.play('cursor8.mp3', mode: PlayerMode.LOW_LATENCY);
-                                setState(() {
-                                  worksec = val;
-                                  workTotalTime = ((workmin * 60) + worksec);
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 150.0,
-                  ),
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      // shape: BoxShape.circle,
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.lightBlueAccent[100],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Icon(Icons.music_note),
-                            Text(
-                              " Rest time ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Icon(Icons.airline_seat_individual_suite_rounded),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            NumberPicker.integer(
-                              initialValue: restmin,
-                              minValue: 0,
-                              maxValue: 59,
-                              onChanged: (val) {
-                                setState(() {
-                                  restmin = val;
-                                  restTotalTime = ((restmin * 60) + restsec);
-                                });
-                              },
-                            ),
-                            Text(
-                              ":",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            NumberPicker.integer(
-                              initialValue: restsec,
-                              minValue: 0,
-                              maxValue: 59,
-                              onChanged: (val) {
-                                setState(() {
-                                  restsec = val;
-                                  restTotalTime = ((restmin * 60) + restsec);
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // ),
-            //Expanded(
-            //child:
-            Padding(
-              padding: EdgeInsets.only(bottom: 100),
-              child: ElevatedButton(
-                child: Text(
-                  'Start Timer!',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.lightGreenAccent,
-                  onPrimary: Colors.white,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 10.0,
-                  ),
-                ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    child: AlertDialog(
-                      title: Text("Start Timer"),
-                      content: Text(
-                        'Work Time → $workmin:$worksec \nRest Time  → $restmin:$restsec \nでタイマーを起動します。',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      actions: <Widget>[
-                        // ボタン領域
-                        FlatButton(
-                          child: Text("Cancel"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        FlatButton(
-                          child: Text("OK"),
-                          onPressed: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Pomodoro(
-                                    '$workTotalTime', '$restTotalTime')),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  );
-                },
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 196),
+                      child: Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.lightBlueAccent[100],
+                        ),
+                        child: Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.music_note),
+                                  Text(
+                                    " Rest time ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Icon(Icons.airline_seat_individual_suite_rounded),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: NumberPicker.integer(
+                                      initialValue: restmin,
+                                      minValue: 0,
+                                      maxValue: 59,
+                                      onChanged: (val) {
+                                        audio.play('cursor8.mp3',volume: 0.1, mode: PlayerMode.LOW_LATENCY);
+                                        setState(() {
+                                          restmin = val;
+                                          restTotalTime = ((restmin * 60) + restsec);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  // Expanded(
+                                  //  child:
+                                    Text(
+                                      ":",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
+                                    // ),
+                                  ),
+                                  Expanded(
+                                    child: NumberPicker.integer(
+                                      initialValue: restsec,
+                                      minValue: 0,
+                                      maxValue: 59,
+                                      onChanged: (val) {
+                                        audio.play('cursor8.mp3',volume: 0.1, mode: PlayerMode.LOW_LATENCY);
+                                        setState(() {
+                                          restsec = val;
+                                          restTotalTime = ((restmin * 60) + restsec);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            //),
-          ],
+              // ),
+              //Expanded(
+              //child:
+              Padding(
+                padding: EdgeInsets.only(bottom: 100),
+                child: ElevatedButton(
+                  child: Text(
+                    'Start Timer!',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightGreenAccent,
+                    onPrimary: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 40.0,
+                      vertical: 10.0,
+                    ),
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      child: AlertDialog(
+                        title: Text("Start Timer"),
+                        content: Text(
+                          'Work Time → $workmin:$worksec \nRest Time  → $restmin:$restsec \nでタイマーを起動します。',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        actions: <Widget>[
+                          // ボタン領域
+                          FlatButton(
+                            color: Colors.blue,
+                            child: Text("Cancel"),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          FlatButton(
+                            color: Colors.red,
+                            child: Text("OK"),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Pomodoro(
+                                  '$workTotalTime', '$restTotalTime',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              //),
+            ],
+          ),
         ),
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
