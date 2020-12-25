@@ -1,6 +1,7 @@
 # Pomodoro Timer
 
 このリポジトリは Code Chrysalisの生徒であるときに作成しました。
+
 This was created during our time as a student at Code Chrysalis.
 
 ## How to use this app/ 使い方
